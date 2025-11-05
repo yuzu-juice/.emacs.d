@@ -102,7 +102,10 @@
   )
 (leaf diff-hl
   :ensure t
-  :global-minor-mode t)
+  :config
+  (global-diff-hl-mode 1)
+  (with-eval-after-load 'magit
+    (add-hook 'magit-post-commit-hook #'diff-hl-update)))
 
 ;; 現在位置表示
 (column-number-mode t)

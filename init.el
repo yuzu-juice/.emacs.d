@@ -61,8 +61,6 @@
   :ensure t
   :config
   (setq default-input-method "japanese-mozc"))
-(leaf nerd-icons
-    :ensure t)
 (leaf puni
   :ensure t
   :global-minor-mode puni-global-mode)
@@ -97,14 +95,14 @@
   (:treemacs-mode-map
    ([mouse-1] . #'treemacs-single-click-expand-action)
    )
-  :config
-  (setq treemacs-width 40)
   )
-(leaf treemacs-nerd-icons
+(leaf treemacs-magit
   :ensure t
-  :after (treemacs nerd-icons)
-  :config
-  (treemacs-load-theme "nerd-icons"))
+  :after (treemacs magit)
+  )
+(leaf diff-hl
+  :ensure t
+  :global-minor-mode t)
 
 ;; 現在位置表示
 (column-number-mode t)

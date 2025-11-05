@@ -57,29 +57,54 @@
   :ensure t
   :global-minor-mode t
   :custom ((beacon-color . "#FAB27B")))
-(leaf corfu
-  :ensure t
-  :global-minor-mode global-corfu-mode
-  :custom
-  (corfu-cycle . t)
-  (corfu-auto . t)
-  (text-mode-ispell-word-completion . nil))
-(leaf cape
-  :ensure t)
-(leaf flymake
-  :global-minor-mode t)
 (leaf mozc
   :ensure t
   :config
   (setq default-input-method "japanese-mozc"))
-(leaf :font
-  :config
-  (leaf nerd-icons
+(leaf nerd-icons
     :ensure t)
-  )
 (leaf puni
   :ensure t
   :global-minor-mode puni-global-mode)
+(leaf lsp-mode
+  :ensure t
+  :hook ((c-mode . lsp)
+	 (c++-mode . lsp))
+  :commands lsp)
+(leaf lsp-ui
+  :ensure t
+  :after lsp-mode
+  :commands lsp-ui-mode)
+(leaf company
+  :ensure t
+  :global-minor-mode global-company-mode)
+(leaf flycheck
+  :ensure t
+  :global-minor-mode global-flycheck-mode)
+(leaf projectile
+  :ensure t
+  :global-minor-mode projectile-mode)
+(leaf wakatime-mode
+  :ensure t
+  :custom
+  ((wakatime-cli-path . "/opt/homebrew/bin/wakatime-cli"))
+  :config
+  (global-wakatime-mode))
+(leaf treemacs
+  :ensure t
+  :bind
+  ("<f8>" . treemacs)
+  (:treemacs-mode-map
+   ([mouse-1] . #'treemacs-single-click-expand-action)
+   )
+  :config
+  (setq treemacs-width 40)
+  )
+(leaf treemacs-nerd-icons
+  :ensure t
+  :after (treemacs nerd-icons)
+  :config
+  (treemacs-load-theme "nerd-icons"))
 
 ;; 現在位置表示
 (column-number-mode t)
@@ -93,6 +118,12 @@
 ;; 最初の挨拶非表示
 (setq inhibit-startup-message t)
 
+;; 最終行に空行を強制
+(setq require-final-newline t)
+
+;; 起動時に最後に開いていたファイルを開く
+(desktop-save-mode 1)
+
 ;; key bind
 (global-set-key (kbd "C-t") 'delete-window)
 (global-set-key (kbd "C-h") 'delete-backward-char)
@@ -100,13 +131,16 @@
 ;; UTF-8を優先
 (prefer-coding-system 'utf-8)
 
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages nil))
+ '(package-selected-packages
+   '(all-the-icons beacon blackout cape company corfu doom-modeline
+		   doom-themes el-get flycheck gcmh hydra
+		   leaf-keywords lsp-ui magit mozc projectile puni
+		   shackle undo-tree volatile-highlights wakatime-mode)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

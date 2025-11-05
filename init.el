@@ -100,6 +100,10 @@
   :ensure t
   :after (treemacs magit)
   )
+(leaf treemacs-projectile
+  :ensure t
+  :after (treemacs projectile)
+  )
 (leaf diff-hl
   :ensure t
   :config

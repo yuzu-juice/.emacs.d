@@ -22,6 +22,31 @@
     (leaf-keywords-init)))
 ;; </leaf-install-code>
 
+;; leaf package install
+;;; magit
+(leaf magit :ensure t :bind (("C-x g" . magit-status)))
+;;; undo-tree
+(leaf undo-tree
+  :ensure t
+  :global-minor-mode global-undo-tree-mode
+  :custom
+  (undo-tree-auto-save-history . nil)
+)
+;;; corfu
+(leaf corfu
+  :ensure t
+  :global-minor-mode global-corfu-mode
+  :custom
+  (corfu-cycle . t)
+  (corfu-auto . t)
+  (text-mode-ispell-word-completion . nil)
+)
+
+;;; cape
+(leaf cape
+  :ensure t
+)
+
 ;; 現在位置表示
 (column-number-mode t)
 
@@ -33,3 +58,7 @@
 
 ;; key bind
 (global-set-key (kbd "C-t") 'delete-window)
+
+;; byte compile warning 非表示
+(setq byte-compile-warnings nil)
+

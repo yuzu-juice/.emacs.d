@@ -55,8 +55,9 @@
   (prefer-coding-system 'utf-8)
   ;; コンパイル時に自動スクロール
   (setq compilation-scroll-output t)
-  :bind (("C-t" . delete-window)
-         ("C-h" . delete-backward-char)))
+  :bind
+  (("C-t" . delete-window)
+   ("C-h" . delete-backward-char)))
 
 ;;
 ;; Ui Packages
@@ -100,7 +101,13 @@
 (leaf lsp-mode
   :ensure t
   :hook ((c-mode . lsp)
-         (c++-mode . lsp))
+         (c++-mode . lsp)
+	 (typescript-ts-mode . lsp)
+	 (tsx-ts-mode . lsp)
+	 (typescript-mode . lsp)
+	 (js-mode . lsp)
+	 (js2-mode . lsp)
+	 (json-ts-mode . lsp))
   :commands lsp)
 
 (leaf lsp-ui
@@ -111,10 +118,6 @@
 (leaf company
   :ensure t
   :global-minor-mode global-company-mode)
-
-(leaf flycheck
-  :ensure t
-  :global-minor-mode global-flycheck-mode)
 
 (leaf projectile
   :ensure t
@@ -168,5 +171,16 @@
   :custom
   ((wakatime-cli-path . "/opt/homebrew/bin/wakatime-cli")))
 
+;;;
+;;; icons
+;;;
+(leaf nerd-icons
+  :ensure t)
+
+(leaf treemacs-nerd-icons
+  :ensure t
+  :after treemacs nerd-icons
+  :config
+  (treemacs-nerd-icons-config))
 
 ;;; init.el ends here

@@ -32,34 +32,6 @@
 ;; </leaf-install-code>
 
 ;;
-;; Core Emacs Settings
-;;
-(leaf emacs
-  :doc "Emacs-lisp standard library"
-  :tag "built-in"
-  :custom
-  ;; 現在位置表示
-  (column-number-mode . t)
-  ;; 行番号表示
-  (global-display-line-numbers-mode . t)
-  ;; 最初の挨拶非表示
-  (inhibit-startup-message . t)
-  ;; 最終行に空行を強制
-  (require-final-newline . t)
-  ;; 起動時に最後に開いていたファイルを開く
-  (desktop-save-mode . 1)
-  :config
-  ;; カーソルの色を変更
-  (set-cursor-color "#F79428")
-  ;; UTF-8を優先
-  (prefer-coding-system 'utf-8)
-  ;; コンパイル時に自動スクロール
-  (setq compilation-scroll-output t)
-  :bind
-  (("C-t" . delete-window)
-   ("C-h" . delete-backward-char)))
-
-;;
 ;; Ui Packages
 ;;
 (leaf doom-themes
@@ -113,7 +85,13 @@
 (leaf lsp-ui
   :ensure t
   :after lsp-mode
-  :commands lsp-ui-mode)
+  :custom
+  (lsp-ui-doc-enable . t)
+  (lsp-ui-doc-header . t)
+  (lsp-ui-peek-enable . t)
+  (lsp-ui-peek-peek-height . 20)
+  (lsp-ui-peek-list-width . 50)
+)
 
 (leaf company
   :ensure t
@@ -182,5 +160,33 @@
   :after treemacs nerd-icons
   :config
   (treemacs-nerd-icons-config))
+
+;;
+;; Core Emacs Settings
+;;
+(leaf emacs
+  :doc "Emacs-lisp standard library"
+  :tag "built-in"
+  :custom
+  ;; 現在位置表示
+  (column-number-mode . t)
+  ;; 行番号表示
+  (global-display-line-numbers-mode . t)
+  ;; 最初の挨拶非表示
+  (inhibit-startup-message . t)
+  ;; 最終行に空行を強制
+  (require-final-newline . t)
+  ;; 起動時に最後に開いていたファイルを開く
+  (desktop-save-mode . 1)
+  :config
+  ;; カーソルの色を変更
+  (set-cursor-color "#F79428")
+  ;; UTF-8を優先
+  (prefer-coding-system 'utf-8)
+  ;; コンパイル時に自動スクロール
+  (setq compilation-scroll-output t)
+  :bind
+  (("C-t" . delete-window)
+   ("C-h" . delete-backward-char)))
 
 ;;; init.el ends here

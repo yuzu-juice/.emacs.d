@@ -147,7 +147,11 @@
   :ensure t
   :global-minor-mode t
   :custom
-  ((wakatime-cli-path . "/opt/homebrew/bin/wakatime-cli")))
+  `((wakatime-cli-path . ,(cond ((eq system-type 'darwin) ; for macOS
+                                "/opt/homebrew/bin/wakatime-cli")
+                               ((eq system-type 'gnu/linux) ; for Linux
+                                "~/.wakatime/wakatime-cli")
+                               (t nil))))) ; other
 
 (leaf vterm
   :ensure t
@@ -182,6 +186,8 @@
   (require-final-newline . t)
   ;; 起動時に最後に開いていたファイルを開く
   (desktop-save-mode . 1)
+  ;; バッファの自動リフレッシュ
+  (global-auto-revert-mode . 1)
   :config
   ;; カーソルの色を変更
   (set-cursor-color "#F79428")
@@ -199,21 +205,12 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(beacon-color "#FAB27B" nil nil "Customized with leaf in `beacon' block at `/Users/takitaga/.emacs.d/init.el'")
- '(column-number-mode t nil nil "Customized with leaf in `emacs' block at `/Users/takitaga/.emacs.d/init.el'")
- '(desktop-save-mode 1 nil nil "Customized with leaf in `emacs' block at `/Users/takitaga/.emacs.d/init.el'")
- '(gcmh-verbose t nil nil "Customized with leaf in `gcmh' block at `/Users/takitaga/.emacs.d/init.el'")
- '(global-display-line-numbers-mode t nil nil "Customized with leaf in `emacs' block at `/Users/takitaga/.emacs.d/init.el'")
- '(inhibit-startup-message t nil nil "Customized with leaf in `emacs' block at `/Users/takitaga/.emacs.d/init.el'")
- '(mouse-wheel-progressive-speed nil)
- '(package-archives
-   '(("org" . "https://orgmode.org/elpa/")
-     ("melpa" . "https://melpa.org/packages/")
-     ("gnu" . "https://elpa.gnu.org/packages/")))
- '(require-final-newline t nil nil "Customized with leaf in `emacs' block at `/Users/takitaga/.emacs.d/init.el'")
- '(treemacs-is-never-other-window t nil nil "Customized with leaf in `treemacs' block at `/Users/takitaga/.emacs.d/init.el'")
- '(undo-tree-auto-save-history nil nil nil "Customized with leaf in `undo-tree' block at `/Users/takitaga/.emacs.d/init.el'")
- '(wakatime-cli-path "/opt/homebrew/bin/wakatime-cli" nil nil "Customized with leaf in `wakatime-mode' block at `/Users/takitaga/.emacs.d/init.el'"))
+ '(package-selected-packages
+   '(beacon blackout company diff-hl doom-modeline doom-themes el-get
+	    gcmh hydra leaf-keywords lsp-mode lsp-ui magit mozc
+	    nerd-icons projectile puni treemacs treemacs-magit
+	    treemacs-nerd-icons treemacs-projectile undo-tree
+	    wakatime-mode)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

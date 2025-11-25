@@ -154,8 +154,7 @@
                                (t nil))))) ; other
 
 (leaf vterm
-  :ensure t
-)
+  :ensure t)
 
 ;;;
 ;;; icons

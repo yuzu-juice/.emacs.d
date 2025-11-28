@@ -20,24 +20,42 @@
 
   (leaf leaf-keywords
     :ensure t
-    :init
-    ;; optional packages if you want to use :hydra, :el-get, :blackout,,,
-    (leaf hydra :ensure t)
-    (leaf el-get :ensure t)
-    (leaf blackout :ensure t)
-
     :config
     ;; initialize leaf-keywords.el
     (leaf-keywords-init)))
-;; </leaf-install-code>
+
+;;
+;; Core Emacs Settings
+;;
+(leaf emacs
+  :custom
+  ;; 現在位置表示
+  (column-number-mode . t)
+  ;; 行番号表示
+  (global-display-line-numbers-mode . t)
+  ;; 最初の挨拶非表示
+  (inhibit-startup-message . t)
+  ;; 最終行に空行を強制
+  (require-final-newline . t)
+  ;; 起動時に最後に開いていたファイルを開く
+  (desktop-save-mode . 1)
+  ;; バッファの自動リフレッシュ
+  (global-auto-revert-mode . 1)
+  :config
+  ;; カーソルの色を変更
+  (set-cursor-color "#F79428")
+  ;; UTF-8を優先
+  (prefer-coding-system 'utf-8)
+  :bind
+  (("C-t" . delete-window)
+   ("C-h" . delete-backward-char)))
 
 ;;
 ;; Ui Packages
 ;;
 (leaf doom-themes
   :ensure t
-  :config
-  (load-theme 'doom-solarized-light t))
+  :config (load-theme 'doom-solarized-light t))
 
 (leaf doom-modeline
   :ensure t
@@ -53,7 +71,9 @@
 ;;
 (leaf undo-tree
   :ensure t
-  :global-minor-mode global-undo-tree-mode
+  :hook ((prog-mode . undo-tree-mode)
+	 (markdown-mode . undo-tree-mode)
+	 (text-mode . undo-tree-mode))
   :custom
   (undo-tree-auto-save-history . nil))
 
@@ -62,10 +82,6 @@
   :global-minor-mode t
   :custom
   (gcmh-verbose . t))
-
-(leaf puni
-  :ensure t
-  :global-minor-mode puni-global-mode)
 
 ;;
 ;; Programming Packages
@@ -85,37 +101,30 @@
 (leaf lsp-ui
   :ensure t
   :after lsp-mode
-  :custom
-  (lsp-ui-doc-enable . t)
-  (lsp-ui-doc-header . t)
-  (lsp-ui-peek-enable . t)
-  (lsp-ui-peek-peek-height . 20)
-  (lsp-ui-peek-list-width . 50)
+  :commands lsp-ui-mode
 )
-
-(leaf company
-  :ensure t
-  :global-minor-mode global-company-mode)
 
 (leaf projectile
   :ensure t
   :global-minor-mode projectile-mode)
 
-(leaf diff-hl
-  :ensure t
-  :global-minor-mode t
-  :after magit
-  :config
-  (add-hook 'magit-pre-refresh-hook #'diff-hl-magit-pre-refresh)
-  (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh)
-  (add-hook 'magit-post-commit-hook #'diff-hl-update))
+;;
+;; Git Packages
+;;
 
-;;
-;; Tools Packages
-;;
 (leaf magit
   :ensure t
   :bind (("C-x g" . magit-status)))
+
+(leaf diff-hl
+  :ensure t
+  :hook
+  ((prog-mode . diff-hl-mode)
+   (magit-refresh-buffer . diff-hl-magit-post-refresh)))
+
+;;
+;; File browser Packages
+;;
 
 (leaf treemacs
   :ensure t
@@ -138,23 +147,6 @@
   (add-hook 'projectile-after-switch-project-hook
             #'treemacs-display-current-project-exclusively))
 
-(leaf mozc
-  :ensure t
-  :config
-  (setq default-input-method "japanese-mozc"))
-
-(leaf wakatime-mode
-  :ensure t
-  :global-minor-mode t
-  :custom
-  `((wakatime-cli-path . ,(cond ((eq system-type 'darwin) ; for macOS
-                                "/opt/homebrew/bin/wakatime-cli")
-                               ((eq system-type 'gnu/linux) ; for Linux
-                                "~/.wakatime/wakatime-cli")
-                               (t nil))))) ; other
-
-(leaf vterm
-  :ensure t)
 
 ;;;
 ;;; icons
@@ -169,50 +161,23 @@
   (treemacs-nerd-icons-config))
 
 ;;
-;; Core Emacs Settings
+;; Other Packages
 ;;
-(leaf emacs
-  :doc "Emacs-lisp standard library"
-  :tag "built-in"
-  :custom
-  ;; 現在位置表示
-  (column-number-mode . t)
-  ;; 行番号表示
-  (global-display-line-numbers-mode . t)
-  ;; 最初の挨拶非表示
-  (inhibit-startup-message . t)
-  ;; 最終行に空行を強制
-  (require-final-newline . t)
-  ;; 起動時に最後に開いていたファイルを開く
-  (desktop-save-mode . 1)
-  ;; バッファの自動リフレッシュ
-  (global-auto-revert-mode . 1)
+
+(leaf mozc
+  :ensure t
   :config
-  ;; カーソルの色を変更
-  (set-cursor-color "#F79428")
-  ;; UTF-8を優先
-  (prefer-coding-system 'utf-8)
-  ;; コンパイル時に自動スクロール
-  (setq compilation-scroll-output t)
-  :bind
-  (("C-t" . delete-window)
-   ("C-h" . delete-backward-char)))
+  (setq default-input-method "japanese-mozc"))
+
+(when (executable-find
+       (cond ((eq system-type 'darwin) "/opt/homebrew/bin/wakatime-cli")
+             ((eq system-type 'gnu/linux)
+              (expand-file-name "~/.wakatime/wakatime-cli"))))
+  (leaf wakatime-mode :ensure t :global-minor-mode t))
+
+(leaf vterm
+  :ensure t)
+
+
 
 ;;; init.el ends here
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(beacon blackout company diff-hl doom-modeline doom-themes el-get
-	    gcmh hydra leaf-keywords lsp-mode lsp-ui magit mozc
-	    nerd-icons projectile puni treemacs treemacs-magit
-	    treemacs-nerd-icons treemacs-projectile undo-tree
-	    wakatime-mode)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )

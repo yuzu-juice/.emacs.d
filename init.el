@@ -85,7 +85,13 @@
 
 (use-package projectile
   :ensure t
-  :config (projectile-mode 1))
+  :config (projectile-mode 1)
+
+  (add-hook 'emacs-startup-hook
+	    (lambda ()
+              (when (projectile-project-p)
+		(require 'treemacs-projectile)
+		(treemacs-display-current-project-exclusively)))))
 
 ;; Git Packages
 (use-package magit

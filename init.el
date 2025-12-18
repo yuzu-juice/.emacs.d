@@ -69,10 +69,12 @@
   :config
   (yas-global-mode 1))
 
-(use-package vue-mode
-  :ensure t
-  :mode "\\.vue\\'"
-  )
+(use-package web-mode
+  :mode
+  (("\\.js\\'" . web-mode)
+   ("\\.vue\\'" . web-mode)
+   ("\\.ts\\'" . web-mode)))
+
 
 (use-package typescript-mode
   :ensure t)

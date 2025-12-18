@@ -69,7 +69,7 @@
   :config
   (yas-global-mode 1))
 
-(use-package web-mode
+(use-package vue-mode
   :ensure t
   :mode "\\.vue\\'"
   )
@@ -88,7 +88,7 @@
          (js-mode . lsp-deferred)
          (js2-mode . lsp-deferred)
          (json-ts-mode . lsp-deferred)
-	 (web-mode . lsp-deferred))
+	 (vue-mode . lsp-deferred))
   :custom
   (lsp-use-plists t))
 

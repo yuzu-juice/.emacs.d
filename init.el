@@ -63,6 +63,9 @@
   :custom
   (gcmh-verbose t))
 
+(use-package rg
+  :ensure t)
+
 ;; Programming Packages
 (use-package yasnippet
   :ensure t
@@ -90,9 +93,7 @@
          (js-mode . lsp-deferred)
          (js2-mode . lsp-deferred)
          (json-ts-mode . lsp-deferred)
-	 (vue-mode . lsp-deferred))
-  :custom
-  (lsp-use-plists t))
+	 (web-mode . lsp-deferred)))
 
 (use-package lsp-ui
   :ensure t
@@ -157,18 +158,3 @@
   :ensure t)
 
 ;;; init.el ends here
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(beacon company corfu diff-hl doom-modeline doom-themes gcmh lsp-ui
-	    mozc treemacs-magit treemacs-projectile typescript-mode
-	    undo-tree vterm vue-mode web-mode yasnippet)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )

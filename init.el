@@ -54,6 +54,11 @@
   ((css-mode markdown-mode web-mode prog-mode)
    . rainbow-mode))
 
+(use-package markdown-mermaid
+  :ensure t
+  :bind (:map markdown-mode-map
+              ("C-c m" . markdown-mermaid-preview)))
+
 ;; Editing Packages
 (use-package undo-tree
   :ensure t
@@ -164,23 +169,3 @@
   :ensure t)
 
 ;;; init.el ends here
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(all-the-icons apheleia beacon blackout cape company corfu diff-hl
-		   doom-modeline doom-themes el-get flycheck gcmh
-		   leaf-keywords lsp-dart lsp-ui mozc nerd-icons-dired
-		   puni rainbow-mode rg shackle treemacs-magit
-		   treemacs-nerd-icons treemacs-projectile
-		   treesit-auto typescript-mode undo-tree
-		   volatile-highlights vterm vue-mode wakatime-mode
-		   web-mode yasnippet)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )

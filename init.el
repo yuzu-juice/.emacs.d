@@ -20,8 +20,11 @@
 (global-display-line-numbers-mode 1)
 (setq inhibit-startup-message t)
 (setq require-final-newline t)
-(desktop-save-mode 1)
+(desktop-save-mode -1)
 (global-auto-revert-mode 1)
+(setq custom-file (locate-user-emacs-file "custom.el"))
+(when (file-exists-p custom-file)
+  (load custom-file))
 
 ;; Cursor color and coding system
 (set-cursor-color "#F79428")
@@ -84,27 +87,31 @@
   (yas-global-mode 1))
 
 (use-package web-mode
-  :mode
-  (("\\.js\\'" . web-mode)
-   ("\\.vue\\'" . web-mode)
-   ("\\.ts\\'" . web-mode)))
-
+  :mode (("\\.vue\\'" . web-mode)))
 
 (use-package typescript-mode
-  :ensure t)
+  :ensure t
+  :mode (("\\.ts\\'" . typescript-mode)
+         ("\\.tsx\\'" . typescript-mode))
+  :hook (typescript-mode . lsp-deferred))
 
 (use-package lsp-mode
   :ensure t
   :commands (lsp lsp-deferred)
-  :hook ((c-mode . lsp-deferred)
+  :hook ((typescript-mode . lsp-deferred)
+         (yaml-mode . lsp-deferred)
+         (c-mode . lsp-deferred)
          (c++-mode . lsp-deferred)
-         (typescript-ts-mode . lsp-deferred)
-         (tsx-ts-mode . lsp-deferred)
-         (typescript-mode . lsp-deferred)
          (js-mode . lsp-deferred)
-         (js2-mode . lsp-deferred)
-         (json-ts-mode . lsp-deferred)
-	 (web-mode . lsp-deferred)))
+         (json-ts-mode . lsp-deferred))
+  :custom
+  (lsp-completion-provider :capf)
+  (lsp-enable-snippet t))
+
+(use-package yaml-mode
+  :ensure t
+  :mode (("\\.ya?ml\\'" . yaml-mode))
+  :hook (yaml-mode . lsp-deferred))
 
 (use-package lsp-ui
   :ensure t
@@ -156,14 +163,6 @@
   :ensure t
   :config
   (setq default-input-method "japanese-mozc"))
-
-(when (executable-find
-       (cond ((eq system-type 'darwin) "/opt/homebrew/bin/wakatime-cli")
-             ((eq system-type 'gnu/linux)
-              (expand-file-name "~/.wakatime/wakatime-cli"))))
-  (use-package wakatime-mode
-    :ensure t
-    :config (global-wakatime-mode 1)))
 
 (use-package vterm
   :ensure t)

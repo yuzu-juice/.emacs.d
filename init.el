@@ -6,11 +6,11 @@
 ;; Suppress byte compile warnings
 (setq byte-compile-warnings nil)
 
-;; Package archives and initialization
+;5u;5u;; Package archives and initialization
 (require 'package)
 (setq package-archives '(("org" . "https://orgmode.org/elpa/")
                          ("melpa" . "https://melpa.org/packages/")
-                         ("gnu" . "https://elpa.gnu.org/packages/")))
+                        ("gnu" . "https://elpa.gnu.org/packages/")))
 (package-initialize)
 (unless package-archive-contents
   (package-refresh-contents))
@@ -163,8 +163,5 @@
   :ensure t
   :config
   (setq default-input-method "japanese-mozc"))
-
-(use-package vterm
-  :ensure t)
 
 ;;; init.el ends here

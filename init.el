@@ -8,10 +8,9 @@
 
 ;; Package archives and initialization
 (require 'package)
-(setq package-archives '(("org" . "https://orgmode.org/elpa/")
-                         ("melpa" . "https://melpa.org/packages/")
-                         ("gnu" . "https://elpa.gnu.org/packages/")))
-(package-initialize)
+(add-to-list 'package-archives
+	     '("melpa" . "https://melpa.org/packages/"))
+
 (unless package-archive-contents
   (package-refresh-contents))
 
@@ -108,10 +107,18 @@
   (lsp-completion-provider :capf)
   (lsp-enable-snippet t))
 
+(use-package eglot
+  :ensure nil)
+
 (use-package yaml-mode
   :ensure t
   :mode (("\\.ya?ml\\'" . yaml-mode))
   :hook (yaml-mode . lsp-deferred))
+
+(use-package typst-ts-mode
+  :ensure t
+  :mode ("\\.typ\\'" . typst-ts-mode)
+  :hook (typst-ts-mode . eglot-ensure))
 
 (use-package lsp-ui
   :ensure t
@@ -143,8 +150,7 @@
   :ensure t
   :custom
   (treemacs-is-never-other-window t)
-  :bind ("<f8>" . treemacs)
-  :config
+  :bind ("<f8>" . treemacs)  :config
   (define-key treemacs-mode-map [mouse-1] #'treemacs-single-click-expand-action))
 
 (use-package treemacs-magit

@@ -156,7 +156,4 @@
   :config
   (setq default-input-method "japanese-mozc"))
 
-(use-package vterm
-  :ensure t)
-
 ;;; init.el ends here

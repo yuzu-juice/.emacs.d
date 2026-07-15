@@ -91,39 +91,25 @@
 (use-package typescript-mode
   :ensure t
   :mode (("\\.ts\\'" . typescript-mode)
-         ("\\.tsx\\'" . typescript-mode))
-  :hook (typescript-mode . lsp-deferred))
-
-(use-package lsp-mode
-  :ensure t
-  :commands (lsp lsp-deferred)
-  :hook ((typescript-mode . lsp-deferred)
-         (yaml-mode . lsp-deferred)
-         (c-mode . lsp-deferred)
-         (c++-mode . lsp-deferred)
-         (js-mode . lsp-deferred)
-         (json-ts-mode . lsp-deferred))
-  :custom
-  (lsp-completion-provider :capf)
-  (lsp-enable-snippet t))
+         ("\\.tsx\\'" . typescript-mode)))
 
 (use-package eglot
-  :ensure nil)
+  :ensure nil
+  :hook ((typescript-mode . eglot-ensure)
+	 (yaml-mode . eglot-ensure)
+	 (c-mode . eglot-ensure)
+	 (c++-mode . eglot-ensure)
+	 (js-mode . eglot-ensure)
+	 (json-ts-mode . eglot-ensure)))
 
 (use-package yaml-mode
   :ensure t
-  :mode (("\\.ya?ml\\'" . yaml-mode))
-  :hook (yaml-mode . lsp-deferred))
+  :mode (("\\.ya?ml\\'" . yaml-mode)))
 
 (use-package typst-ts-mode
   :ensure t
   :mode ("\\.typ\\'" . typst-ts-mode)
   :hook (typst-ts-mode . eglot-ensure))
-
-(use-package lsp-ui
-  :ensure t
-  :after lsp-mode
-  :commands lsp-ui-mode)
 
 (use-package projectile
   :ensure t

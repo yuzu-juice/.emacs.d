@@ -19,7 +19,7 @@
 (global-display-line-numbers-mode 1)
 (setq inhibit-startup-message t)
 (setq require-final-newline t)
-(desktop-save-mode -1)
+(setq disabled-command-function nil)
 (global-auto-revert-mode 1)
 (setq custom-file (locate-user-emacs-file "custom.el"))
 (when (file-exists-p custom-file)
@@ -52,9 +52,7 @@
 
 (use-package rainbow-mode
   :ensure t
-  :hook
-  ((css-mode markdown-mode web-mode prog-mode)
-   . rainbow-mode))
+  :hook ((markdown-mode prog-mode) . rainbow-mode))
 
 (use-package markdown-mermaid
   :ensure t
@@ -62,29 +60,15 @@
               ("C-c m" . markdown-mermaid-preview)))
 
 ;; Editing Packages
-(use-package undo-tree
-  :ensure t
-  :hook ((prog-mode . undo-tree-mode)
-         (markdown-mode . undo-tree-mode)
-         (text-mode . undo-tree-mode))
-  :custom
-  (undo-tree-auto-save-history nil))
-
-(use-package gcmh
-  :ensure t
-  :config (gcmh-mode 1)
-  :custom
-  (gcmh-verbose t))
-
 (use-package rg
   :ensure t)
 
-;; Programming Packages
-(use-package yasnippet
+(use-package corfu
   :ensure t
-  :config
-  (yas-global-mode 1))
+  :custom (corfu-auto t)
+  :config (global-corfu-mode 1))
 
+;; Programming Packages
 (use-package web-mode
   :mode (("\\.vue\\'" . web-mode)))
 
@@ -94,7 +78,6 @@
          ("\\.tsx\\'" . typescript-mode)))
 
 (use-package eglot
-  :ensure nil
   :hook ((typescript-mode . eglot-ensure)
 	 (yaml-mode . eglot-ensure)
 	 (c-mode . eglot-ensure)

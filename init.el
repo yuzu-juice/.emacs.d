@@ -77,6 +77,8 @@
   :mode (("\\.ts\\'" . typescript-mode)
          ("\\.tsx\\'" . typescript-mode)))
 
+(add-to-list 'auto-mode-alist '("\\.tpp\\'" . c++-mode))
+
 (use-package eglot
   :hook ((typescript-mode . eglot-ensure)
 	 (yaml-mode . eglot-ensure)
